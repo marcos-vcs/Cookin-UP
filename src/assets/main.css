@@ -41,6 +41,10 @@ body {
   background: url('./fundo-banner.png'), var(--verde-escuro, #263A29);
 }
 
+.d-none{
+  display: none;
+}
+
 .cabecalho-lg {
   font-family: var(--cabecalhos);
   font-size: 3.35625em;

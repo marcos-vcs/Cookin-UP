@@ -1,9 +1,11 @@
 <script lang="ts">
-import BotaoPrincipal from './BotaoPrincipal.vue';
 import Rodape from './Rodape.vue';
 import SelecionarIngredientes from './SelecionarIngredientes.vue';
 import SuaLista from './SuaLista.vue';
 import Tag from './Tag.vue';
+import MostrarReceitas from './MostrarReceitas.vue';
+
+type Pagina = 'SelecionarIngredientes' | 'MostrarReceitas';
 
 export default {
     name: 'ConteudoPrincipal',
@@ -12,11 +14,12 @@ export default {
     Tag,
     SuaLista,
     Rodape,
-    BotaoPrincipal
+    MostrarReceitas
 },
     data() {
         return {
             ingredientes: [] as string[],
+            conteudo: 'SelecionarIngredientes' as Pagina,
         };
     },
     methods: {
@@ -26,18 +29,33 @@ export default {
         removaIngredientes(ingrediente: string){
             const indice = this.ingredientes.indexOf(ingrediente);
             this.ingredientes.splice(indice, 1);
-        }
+        },
+        navegar(pagina: Pagina){
+            this.$scrollTo('#top-of-page');
+            this.conteudo = pagina;
+        },
     }
 }
 </script>
 
 <template>
+    <div id="top-of-page"></div>
     <main class="conteudo-principal">
         <SuaLista :ingredientes="ingredientes"></SuaLista>
-        <SelecionarIngredientes
-        @adicionar-ingrediente="adicionarIngredientes($event)"
-        @remova-ingrediente="removaIngredientes($event)"></SelecionarIngredientes>
-        <BotaoPrincipal></BotaoPrincipal>
+        <KeepAlive include="SelecionarIngredientes">
+            <SelecionarIngredientes
+                v-if="conteudo === 'SelecionarIngredientes'"
+                @buscar-receitas="navegar('MostrarReceitas');"
+                @adicionar-ingrediente="adicionarIngredientes($event)"
+                @remova-ingrediente="removaIngredientes($event)">
+            </SelecionarIngredientes>
+
+            <MostrarReceitas
+                v-else-if="conteudo === 'MostrarReceitas'"
+                :ingredientes="ingredientes"
+                @selecionar-ingredientes="navegar('SelecionarIngredientes');">
+            </MostrarReceitas>
+        </KeepAlive>
     </main>
     <Rodape></Rodape>
 </template>

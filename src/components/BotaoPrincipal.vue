@@ -1,17 +1,25 @@
 <script lang="ts">
 export default{
     name: 'BotaoPrincipal',
+    props: {
+        text: {
+            type: String,
+            required: true
+        }
+    }
 }
 </script>
 
 <template>
-    <button class="botao-receitas">
-        Buscar receitas!
+    <button class="paragrafo-lg botao-principal">
+        {{ text }}
     </button>
 </template>
 
 <style scoped>
-.botao-receitas{
+.botao-principal{
+    width: 312px;
+    height: 56px;
     padding: 0.8rem 3rem;
     border-radius: 32px;
     background: var(--coral);
@@ -22,7 +30,7 @@ export default{
     color: var(--creme);
     transition: 0.2s;
 }
-.botao-receitas:hover{
+.botao-principal:hover{
     cursor: pointer;
     background-color: var(--ocre);
 }
